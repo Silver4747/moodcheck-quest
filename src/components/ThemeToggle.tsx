@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Moon, Sun, RotateCounter } from 'lucide-react';
+import { Moon, Sun, RotateCcw } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const ThemeToggle = () => {
