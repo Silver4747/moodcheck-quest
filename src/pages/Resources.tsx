@@ -1,4 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
+
+import React, { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -6,120 +7,13 @@ import { getMentalHealthResources, getIndianMentalHealthResources } from '@/util
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import ThemeToggle from '@/components/ThemeToggle';
-import { motion, useScroll, useTransform, useInView, MotionValue } from 'framer-motion';
-import { ExternalLink, Phone, Heart, BookOpen, Globe, MapPin, Sparkles, BadgeIndianRupee } from 'lucide-react';
-
-// 3D card component with mouse tracking effect
-const Card3D = ({ children, className = "" }: { children: React.ReactNode, className?: string }) => {
-  const cardRef = useRef<HTMLDivElement>(null);
-  const [rotateX, setRotateX] = useState(0);
-  const [rotateY, setRotateY] = useState(0);
-  
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!cardRef.current) return;
-    
-    const card = cardRef.current;
-    const rect = card.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-    const mouseX = e.clientX;
-    const mouseY = e.clientY;
-    
-    // Calculate rotation based on mouse position
-    const rotateY = ((mouseX - centerX) / (rect.width / 2)) * 10;
-    const rotateX = ((centerY - mouseY) / (rect.height / 2)) * 10;
-    
-    setRotateX(rotateX);
-    setRotateY(rotateY);
-  };
-  
-  const handleMouseLeave = () => {
-    setRotateX(0);
-    setRotateY(0);
-  };
-  
-  return (
-    <motion.div
-      ref={cardRef}
-      className={`perspective-1000 ${className}`}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      style={{
-        transform: `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`,
-        transition: 'transform 0.1s ease-out',
-      }}
-      whileHover={{ z: 20 }}
-    >
-      {children}
-    </motion.div>
-  );
-};
-
-// 3D floating animation component
-const FloatingElement = ({ 
-  children, 
-  yOffset = 10, 
-  duration = 3, 
-  delay = 0 
-}: { 
-  children: React.ReactNode, 
-  yOffset?: number, 
-  duration?: number,
-  delay?: number
-}) => {
-  return (
-    <motion.div
-      animate={{
-        y: [`-${yOffset}px`, `${yOffset}px`, `-${yOffset}px`],
-      }}
-      transition={{
-        duration,
-        repeat: Infinity,
-        repeatType: "reverse",
-        ease: "easeInOut",
-        delay
-      }}
-    >
-      {children}
-    </motion.div>
-  );
-};
-
-// Parallax scrolling component
-const ParallaxSection = ({ 
-  children, 
-  speed = 0.5,
-  className = "",
-}: { 
-  children: React.ReactNode, 
-  speed?: number,
-  className?: string
-}) => {
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "end start"]
-  });
-  
-  const y = useTransform(scrollYProgress, [0, 1], [0, speed * 100]);
-  
-  return (
-    <motion.div
-      ref={ref}
-      style={{ y }}
-      className={className}
-    >
-      {children}
-    </motion.div>
-  );
-};
+import { motion, useScroll, useTransform, useInView } from 'framer-motion';
+import { ExternalLink, Phone, Heart, BookOpen, Globe, MapPin, Sparkles, BadgeIndianRupee, Move3D } from 'lucide-react';
 
 const Resources = () => {
   const navigate = useNavigate();
   const resources = getMentalHealthResources();
   const indianResources = getIndianMentalHealthResources();
-  const [rotateX, setRotateX] = useState(0);
-  const [rotateY, setRotateY] = useState(0);
   
   const { scrollY } = useScroll();
   const y1 = useTransform(scrollY, [0, 300], [0, -50]);
@@ -188,202 +82,191 @@ const Resources = () => {
             </div>
             
             {/* Crisis Resources */}
-            <ParallaxSection speed={-0.2} className="mb-16">
-              <motion.section 
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7, delay: 0.3 }}
-              >
-                <div className="glass-morphism rounded-xl p-8 border-l-4 border-l-mind-600">
-                  <motion.div
-                    className="flex items-center mb-4"
-                    initial={{ x: -20, opacity: 0 }}
-                    animate={{ x: 0, opacity: 1 }}
-                    transition={{ delay: 0.5 }}
-                  >
-                    <Phone size={24} className="text-mind-600 dark:text-mind-400 mr-3" />
-                    <h2 className="text-xl font-medium text-calm-900 dark:text-white">
-                      Immediate Support Resources
-                    </h2>
-                  </motion.div>
-                  <p className="text-calm-700 dark:text-calm-300 mb-6">
-                    If you're experiencing a mental health crisis or having thoughts of suicide, 
-                    please reach out to one of these services immediately:
-                  </p>
-                  
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <Card3D className="h-full">
-                      <motion.div 
-                        className="h-full bg-mind-50 dark:bg-mind-900/40 rounded-lg p-5 shadow-md"
-                        whileHover={{ scale: 1.03, rotate: 1 }}
-                        transition={{ type: "spring", stiffness: 300 }}
-                      >
-                        <h3 className="text-lg font-medium text-calm-900 dark:text-white mb-1">988 Suicide & Crisis Lifeline</h3>
-                        <p className="text-calm-700 dark:text-calm-400 text-sm mb-3">24/7 support for people in distress</p>
-                        <div className="bg-white dark:bg-calm-800 rounded-md p-3 text-center font-medium text-mind-700 dark:text-mind-400">
-                          Call or Text: 988
-                        </div>
-                      </motion.div>
-                    </Card3D>
-                    
-                    <Card3D className="h-full">
-                      <motion.div 
-                        className="h-full bg-mind-50 dark:bg-mind-900/40 rounded-lg p-5 shadow-md"
-                        whileHover={{ scale: 1.03, rotate: -1 }}
-                        transition={{ type: "spring", stiffness: 300 }}
-                      >
-                        <h3 className="text-lg font-medium text-calm-900 dark:text-white mb-1">Crisis Text Line</h3>
-                        <p className="text-calm-700 dark:text-calm-400 text-sm mb-3">Text with a trained crisis counselor</p>
-                        <div className="bg-white dark:bg-calm-800 rounded-md p-3 text-center font-medium text-mind-700 dark:text-mind-400">
-                          Text HOME to 741741
-                        </div>
-                      </motion.div>
-                    </Card3D>
-                  </div>
-                </div>
-              </motion.section>
-            </ParallaxSection>
-            
-            {/* Indian Resources */}
-            <ParallaxSection speed={0.3} className="mb-16">
-              <motion.section 
-                ref={ref}
-                initial="hidden"
-                animate={isInView ? "visible" : "hidden"}
-                variants={{
-                  visible: { 
-                    opacity: 1,
-                    transition: { staggerChildren: 0.1 }
-                  },
-                  hidden: { opacity: 0 }
-                }}
-              >
-                <motion.div 
-                  variants={{
-                    visible: { opacity: 1, y: 0 },
-                    hidden: { opacity: 0, y: 50 }
-                  }}
-                  className="flex items-center mb-6 space-x-3"
-                >
-                  <FloatingElement yOffset={5} duration={2}>
-                    <div className="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-orange-500 text-white rounded-full">
-                      <BadgeIndianRupee className="h-5 w-5" />
-                    </div>
-                  </FloatingElement>
-                  <h2 className="text-2xl font-bold text-calm-900 dark:text-white">Indian Mental Health Resources</h2>
-                </motion.div>
-                
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {indianResources.map((resource, index) => (
-                    <Card3D key={index} className="h-full">
-                      <motion.div
-                        custom={index}
-                        variants={cardVariants}
-                        className="h-full"
-                      >
-                        <Card className="card-hover dark-card h-full overflow-hidden">
-                          <div className="p-6 relative">
-                            <div className="absolute top-0 right-0 w-16 h-16 -mt-8 -mr-8 bg-orange-500/10 dark:bg-orange-600/20 rounded-full blur-2xl"></div>
-                            
-                            <div className="flex items-start space-x-2 mb-3">
-                              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-orange-100 dark:bg-orange-900/30">
-                                <Globe className="h-4 w-4 text-orange-600 dark:text-orange-400" />
-                              </span>
-                              <div className="flex-1">
-                                <h3 className="text-lg font-medium text-calm-900 dark:text-white mb-1">{resource.name}</h3>
-                                <div className="flex items-center text-sm text-orange-600 dark:text-orange-400">
-                                  <MapPin size={12} className="mr-1" />
-                                  <span>{resource.location}</span>
-                                </div>
-                              </div>
-                            </div>
-                            
-                            <p className="text-calm-700 dark:text-calm-400 text-sm mb-4">{resource.description}</p>
-                            
-                            {resource.contact && (
-                              <div className="flex items-center mb-4">
-                                <Phone size={14} className="text-mind-500 dark:text-mind-400 mr-2" />
-                                <span className="text-sm text-calm-800 dark:text-calm-300">{resource.contact}</span>
-                              </div>
-                            )}
-                            
-                            <a 
-                              href={resource.url} 
-                              target="_blank" 
-                              rel="noopener noreferrer"
-                              className="flex items-center text-orange-600 hover:text-orange-700 dark:text-orange-400 dark:hover:text-orange-300 font-medium text-sm"
-                            >
-                              Visit Website
-                              <ExternalLink size={14} className="ml-1" />
-                            </a>
-                          </div>
-                        </Card>
-                      </motion.div>
-                    </Card3D>
-                  ))}
-                </div>
-              </motion.section>
-            </ParallaxSection>
-            
-            {/* Global Resources */}
-            <ParallaxSection speed={-0.2} className="mb-16">
-              <motion.section 
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.5, delay: 0.2 }}
-              >
-                <motion.div 
+            <motion.section 
+              className="mb-16"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.3 }}
+            >
+              <div className="glass-morphism rounded-xl p-8 border-l-4 border-l-mind-600">
+                <motion.div
+                  className="flex items-center mb-4"
                   initial={{ x: -20, opacity: 0 }}
                   animate={{ x: 0, opacity: 1 }}
-                  transition={{ delay: 0.3 }}
-                  className="flex items-center mb-6 space-x-3"
+                  transition={{ delay: 0.5 }}
                 >
-                  <FloatingElement yOffset={8} duration={2.5}>
-                    <div className="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-mind-600 text-white rounded-full">
-                      <Globe className="h-5 w-5" />
-                    </div>
-                  </FloatingElement>
-                  <h2 className="text-2xl font-bold text-calm-900 dark:text-white">Global Resources</h2>
+                  <Phone size={24} className="text-mind-600 dark:text-mind-400 mr-3" />
+                  <h2 className="text-xl font-medium text-calm-900 dark:text-white">
+                    Immediate Support Resources
+                  </h2>
                 </motion.div>
+                <p className="text-calm-700 dark:text-calm-300 mb-6">
+                  If you're experiencing a mental health crisis or having thoughts of suicide, 
+                  please reach out to one of these services immediately:
+                </p>
                 
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {resources.map((resource, index) => (
-                    <Card3D key={index} className="h-full">
-                      <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.4, delay: index * 0.1 }}
-                        className="h-full"
-                      >
-                        <Card className="card-hover h-full dark:bg-calm-800/50 dark:border-calm-700/50">
-                          <div className="p-6">
-                            <h3 className="text-lg font-medium text-calm-900 dark:text-white mb-2">{resource.name}</h3>
-                            <p className="text-calm-700 dark:text-calm-400 text-sm mb-4">{resource.description}</p>
-                            
-                            {resource.contact && (
-                              <div className="flex items-center mb-4">
-                                <Phone size={16} className="text-mind-500 dark:text-mind-400 mr-2" />
-                                <span className="text-sm text-calm-800 dark:text-calm-300">{resource.contact}</span>
-                              </div>
-                            )}
-                            
-                            <a 
-                              href={resource.url} 
-                              target="_blank" 
-                              rel="noopener noreferrer"
-                              className="flex items-center text-mind-600 hover:text-mind-700 dark:text-mind-400 dark:hover:text-mind-300 font-medium text-sm"
-                            >
-                              Visit Website
-                              <ExternalLink size={14} className="ml-1" />
-                            </a>
-                          </div>
-                        </Card>
-                      </motion.div>
-                    </Card3D>
-                  ))}
+                <div className="grid md:grid-cols-2 gap-6">
+                  <motion.div 
+                    className="bg-mind-50 dark:bg-mind-900/40 rounded-lg p-5 shadow-md tilt-animation"
+                    whileHover={{ scale: 1.03, rotate: 1 }}
+                    transition={{ type: "spring", stiffness: 300 }}
+                  >
+                    <h3 className="text-lg font-medium text-calm-900 dark:text-white mb-1">988 Suicide & Crisis Lifeline</h3>
+                    <p className="text-calm-700 dark:text-calm-400 text-sm mb-3">24/7 support for people in distress</p>
+                    <div className="bg-white dark:bg-calm-800 rounded-md p-3 text-center font-medium text-mind-700 dark:text-mind-400">
+                      Call or Text: 988
+                    </div>
+                  </motion.div>
+                  
+                  <motion.div 
+                    className="bg-mind-50 dark:bg-mind-900/40 rounded-lg p-5 shadow-md tilt-animation"
+                    whileHover={{ scale: 1.03, rotate: -1 }}
+                    transition={{ type: "spring", stiffness: 300 }}
+                  >
+                    <h3 className="text-lg font-medium text-calm-900 dark:text-white mb-1">Crisis Text Line</h3>
+                    <p className="text-calm-700 dark:text-calm-400 text-sm mb-3">Text with a trained crisis counselor</p>
+                    <div className="bg-white dark:bg-calm-800 rounded-md p-3 text-center font-medium text-mind-700 dark:text-mind-400">
+                      Text HOME to 741741
+                    </div>
+                  </motion.div>
                 </div>
-              </motion.section>
-            </ParallaxSection>
+              </div>
+            </motion.section>
+            
+            {/* Indian Resources */}
+            <motion.section 
+              ref={ref}
+              className="mb-16"
+              initial="hidden"
+              animate={isInView ? "visible" : "hidden"}
+              variants={{
+                visible: { 
+                  opacity: 1,
+                  transition: { staggerChildren: 0.1 }
+                },
+                hidden: { opacity: 0 }
+              }}
+            >
+              <motion.div 
+                variants={{
+                  visible: { opacity: 1, y: 0 },
+                  hidden: { opacity: 0, y: 50 }
+                }}
+                className="flex items-center mb-6 space-x-3"
+              >
+                <div className="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-orange-500 text-white rounded-full">
+                  <BadgeIndianRupee className="h-5 w-5" />
+                </div>
+                <h2 className="text-2xl font-bold text-calm-900 dark:text-white">Indian Mental Health Resources</h2>
+              </motion.div>
+              
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {indianResources.map((resource, index) => (
+                  <motion.div
+                    key={index}
+                    custom={index}
+                    variants={cardVariants}
+                    whileHover={{ scale: 1.03, rotate: index % 2 === 0 ? 1 : -1 }}
+                    className="h-full"
+                  >
+                    <Card className="card-hover dark-card h-full overflow-hidden">
+                      <div className="p-6 relative">
+                        <div className="absolute top-0 right-0 w-16 h-16 -mt-8 -mr-8 bg-orange-500/10 dark:bg-orange-600/20 rounded-full blur-2xl"></div>
+                        
+                        <div className="flex items-start space-x-2 mb-3">
+                          <span className="flex h-8 w-8 items-center justify-center rounded-full bg-orange-100 dark:bg-orange-900/30">
+                            <Globe className="h-4 w-4 text-orange-600 dark:text-orange-400" />
+                          </span>
+                          <div className="flex-1">
+                            <h3 className="text-lg font-medium text-calm-900 dark:text-white mb-1">{resource.name}</h3>
+                            <div className="flex items-center text-sm text-orange-600 dark:text-orange-400">
+                              <MapPin size={12} className="mr-1" />
+                              <span>{resource.location}</span>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <p className="text-calm-700 dark:text-calm-400 text-sm mb-4">{resource.description}</p>
+                        
+                        {resource.contact && (
+                          <div className="flex items-center mb-4">
+                            <Phone size={14} className="text-mind-500 dark:text-mind-400 mr-2" />
+                            <span className="text-sm text-calm-800 dark:text-calm-300">{resource.contact}</span>
+                          </div>
+                        )}
+                        
+                        <a 
+                          href={resource.url} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="flex items-center text-orange-600 hover:text-orange-700 dark:text-orange-400 dark:hover:text-orange-300 font-medium text-sm"
+                        >
+                          Visit Website
+                          <ExternalLink size={14} className="ml-1" />
+                        </a>
+                      </div>
+                    </Card>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.section>
+            
+            {/* Global Resources */}
+            <motion.section 
+              className="mb-16"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
+              <motion.div 
+                initial={{ x: -20, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ delay: 0.3 }}
+                className="flex items-center mb-6 space-x-3"
+              >
+                <div className="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-mind-600 text-white rounded-full">
+                  <Globe className="h-5 w-5" />
+                </div>
+                <h2 className="text-2xl font-bold text-calm-900 dark:text-white">Global Resources</h2>
+              </motion.div>
+              
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {resources.map((resource, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.4, delay: index * 0.1 }}
+                    whileHover={{ scale: 1.03, rotate: index % 2 === 0 ? 0.5 : -0.5 }}
+                    className="h-full"
+                  >
+                    <Card className="card-hover h-full dark:bg-calm-800/50 dark:border-calm-700/50">
+                      <div className="p-6">
+                        <h3 className="text-lg font-medium text-calm-900 dark:text-white mb-2">{resource.name}</h3>
+                        <p className="text-calm-700 dark:text-calm-400 text-sm mb-4">{resource.description}</p>
+                        
+                        {resource.contact && (
+                          <div className="flex items-center mb-4">
+                            <Phone size={16} className="text-mind-500 dark:text-mind-400 mr-2" />
+                            <span className="text-sm text-calm-800 dark:text-calm-300">{resource.contact}</span>
+                          </div>
+                        )}
+                        
+                        <a 
+                          href={resource.url} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="flex items-center text-mind-600 hover:text-mind-700 dark:text-mind-400 dark:hover:text-mind-300 font-medium text-sm"
+                        >
+                          Visit Website
+                          <ExternalLink size={14} className="ml-1" />
+                        </a>
+                      </div>
+                    </Card>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.section>
             
             {/* 3D Animated CTA Section */}
             <motion.section
