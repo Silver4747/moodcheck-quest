@@ -1,8 +1,7 @@
-
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { toast } from '@/components/ui/sonner';
+import { toast } from 'sonner';
 import { calculateResult, ResultCategory } from '@/utils/quizData';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -35,7 +34,7 @@ const Results = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const answers = location.state?.answers as (number | null)[] | undefined;
-  const result = answers ? calculateResult(answers) : null;
+  const [result, setResult] = useState<null | ResultCategory>(answers ? calculateResult(answers) : null);
   
   useEffect(() => {
     if (!answers) {
