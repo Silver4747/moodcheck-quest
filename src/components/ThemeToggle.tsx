@@ -5,7 +5,7 @@ import { Moon, Sun } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const ThemeToggle = () => {
-  const [theme, setTheme] = useState<'light' | 'dark'>('dark');
+  const [theme, setTheme] = useState<'light' | 'dark'>('light');
   
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | null;
@@ -15,10 +15,6 @@ const ThemeToggle = () => {
       setTheme(savedTheme);
       document.documentElement.classList.toggle('dark', savedTheme === 'dark');
     } else if (prefersDark) {
-      setTheme('dark');
-      document.documentElement.classList.add('dark');
-    } else {
-      // Force dark theme by default
       setTheme('dark');
       document.documentElement.classList.add('dark');
     }
@@ -39,10 +35,10 @@ const ThemeToggle = () => {
     >
       <Button 
         onClick={toggleTheme}
-        className="w-14 h-14 rounded-full bg-mind-700 dark:bg-mind-800 text-white shadow-lg relative overflow-hidden"
+        className="w-14 h-14 rounded-full bg-mind-600 dark:bg-mind-800 text-white shadow-lg relative overflow-hidden"
         size="icon"
       >
-        <div className="absolute inset-0 bg-gradient-to-tr from-mind-600/30 to-transparent dark:from-mind-700/40 rounded-full" />
+        <div className="absolute inset-0 bg-gradient-to-tr from-mind-500/30 to-transparent dark:from-mind-700/40 rounded-full" />
         
         <AnimatePresence mode="wait">
           <motion.div

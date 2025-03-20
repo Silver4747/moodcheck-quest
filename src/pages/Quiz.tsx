@@ -1,5 +1,4 @@
-
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
@@ -10,21 +9,11 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { motion } from 'framer-motion';
 import { AlertCircle, ArrowLeft, ArrowRight } from 'lucide-react';
-import ThemeToggle from '@/components/ThemeToggle';
 
 const Quiz = () => {
   const navigate = useNavigate();
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState<(number | null)[]>(Array(questions.length).fill(null));
-  const [isAnimating, setIsAnimating] = useState(false);
-  
-  // Force dark mode on component mount
-  useEffect(() => {
-    document.documentElement.classList.add('dark');
-    return () => {
-      // Don't remove dark mode on unmount to maintain dark theme
-    };
-  }, []);
   
   const handleAnswerChange = (value: number) => {
     const newAnswers = [...answers];
@@ -42,12 +31,8 @@ const Quiz = () => {
     }
     
     if (currentQuestion < questions.length - 1) {
-      setIsAnimating(true);
-      setTimeout(() => {
-        setCurrentQuestion(currentQuestion + 1);
-        setIsAnimating(false);
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }, 500);
+      setCurrentQuestion(currentQuestion + 1);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
       navigate('/results', { state: { answers } });
     }
@@ -55,55 +40,24 @@ const Quiz = () => {
   
   const goToPreviousQuestion = () => {
     if (currentQuestion > 0) {
-      setIsAnimating(true);
-      setTimeout(() => {
-        setCurrentQuestion(currentQuestion - 1);
-        setIsAnimating(false);
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }, 500);
+      setCurrentQuestion(currentQuestion - 1);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
   
   return (
-    <div className="min-h-screen flex flex-col bg-calm-900 text-white">
+    <div className="min-h-screen flex flex-col">
       <Header />
-      <ThemeToggle />
       
-      <main className="flex-grow bg-calm-900 relative overflow-hidden">
-        {/* 3D animated background elements */}
-        <motion.div 
-          className="absolute top-20 -right-20 w-80 h-80 bg-mind-800/20 rounded-full blur-3xl"
-          animate={{ 
-            y: [0, 30, 0],
-            rotate: [0, 10, 0]
-          }}
-          transition={{ 
-            duration: 15, 
-            repeat: Infinity,
-            repeatType: "mirror" 
-          }}
-        />
-        <motion.div 
-          className="absolute -bottom-20 -left-20 w-80 h-80 bg-mind-700/20 rounded-full blur-3xl"
-          animate={{ 
-            y: [0, -30, 0],
-            rotate: [0, -10, 0]
-          }}
-          transition={{ 
-            duration: 12, 
-            repeat: Infinity,
-            repeatType: "mirror" 
-          }}
-        />
-        
-        <div className="max-w-3xl mx-auto px-6 py-12 relative z-10">
+      <main className="flex-grow bg-calm-50">
+        <div className="max-w-3xl mx-auto px-6 py-12">
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
           >
-            <h1 className="text-3xl font-medium text-white mb-2">Depression Screening Assessment</h1>
-            <p className="text-calm-300 mb-8">
+            <h1 className="text-3xl font-medium text-calm-900 mb-2">Depression Screening Assessment</h1>
+            <p className="text-calm-700 mb-8">
               Please answer each question honestly based on how you've been feeling over the past two weeks.
             </p>
             
@@ -112,40 +66,21 @@ const Quiz = () => {
               totalQuestions={questions.length} 
             />
             
-            <motion.div
-              className="neo-blur rounded-xl p-8 mb-8 transform-gpu"
-              whileHover={{ scale: 1.01 }}
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.5 }}
-              style={{ transformStyle: "preserve-3d" }}
-            >
-              <motion.div
-                initial={{ opacity: 1, scale: 1, rotateX: 0 }}
-                animate={isAnimating ? { opacity: 0, scale: 0.9, rotateX: -10 } : { opacity: 1, scale: 1, rotateX: 0 }}
-                transition={{ duration: 0.5 }}
-                style={{ transformStyle: "preserve-3d" }}
-              >
-                <QuizQuestion
-                  question={questions[currentQuestion].text}
-                  options={questions[currentQuestion].options}
-                  value={answers[currentQuestion]}
-                  onChange={handleAnswerChange}
-                  index={currentQuestion}
-                />
-              </motion.div>
+            <div className="glass-morphism rounded-xl p-8 mb-8">
+              <QuizQuestion
+                question={questions[currentQuestion].text}
+                options={questions[currentQuestion].options}
+                value={answers[currentQuestion]}
+                onChange={handleAnswerChange}
+                index={currentQuestion}
+              />
               
-              <motion.div 
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.2, duration: 0.5 }}
-                className="flex justify-between mt-12"
-              >
+              <div className="flex justify-between mt-12">
                 <Button
                   variant="outline"
                   onClick={goToPreviousQuestion}
                   disabled={currentQuestion === 0}
-                  className="flex items-center bg-calm-800 border-calm-700 hover:bg-calm-700 text-white"
+                  className="flex items-center"
                 >
                   <ArrowLeft size={16} className="mr-2" />
                   Previous
@@ -153,7 +88,7 @@ const Quiz = () => {
                 
                 <Button 
                   onClick={goToNextQuestion}
-                  className="bg-mind-600 hover:bg-mind-700 text-white"
+                  className="bg-mind-600 hover:bg-mind-700"
                 >
                   {currentQuestion < questions.length - 1 ? (
                     <>
@@ -164,24 +99,19 @@ const Quiz = () => {
                     'View Results'
                   )}
                 </Button>
-              </motion.div>
-            </motion.div>
+              </div>
+            </div>
             
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4, duration: 0.5 }}
-              className="border border-calm-700 rounded-lg p-4 bg-calm-800/70 backdrop-blur-lg"
-            >
-              <h3 className="text-sm font-medium text-white flex items-center">
+            <div className="border border-calm-300 rounded-lg p-4 bg-calm-50">
+              <h3 className="text-sm font-medium text-calm-900 flex items-center">
                 <AlertCircle size={16} className="mr-2 text-amber-500" />
                 Important Note
               </h3>
-              <p className="text-calm-300 text-sm mt-2">
+              <p className="text-calm-700 text-sm mt-2">
                 If you're experiencing thoughts of self-harm or suicide, please call 988 (Suicide & Crisis Lifeline) 
                 immediately for 24/7 support. This assessment is not a substitute for professional help.
               </p>
-            </motion.div>
+            </div>
           </motion.div>
         </div>
       </main>

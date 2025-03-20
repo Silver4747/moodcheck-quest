@@ -12,46 +12,17 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ currentQuestion, totalQuestio
   
   return (
     <div className="w-full mb-8">
-      <div className="flex justify-between mb-2 text-sm text-calm-400">
-        <motion.span
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          key={currentQuestion}
-          transition={{ duration: 0.5 }}
-        >
-          Question {currentQuestion + 1} of {totalQuestions}
-        </motion.span>
-        <motion.span
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          key={`progress-${currentQuestion}`}
-          transition={{ duration: 0.5 }}
-        >
-          {Math.round(progress)}% Complete
-        </motion.span>
+      <div className="flex justify-between mb-2 text-sm text-calm-700">
+        <span>Question {currentQuestion + 1} of {totalQuestions}</span>
+        <span>{Math.round(progress)}% Complete</span>
       </div>
-      <div className="w-full h-2 bg-calm-800 rounded-full overflow-hidden">
+      <div className="w-full h-2 bg-calm-200 rounded-full overflow-hidden">
         <motion.div 
-          className="h-full bg-gradient-to-r from-mind-700 to-mind-500"
-          initial={{ width: `${((currentQuestion) / totalQuestions) * 100}%` }}
+          className="h-full bg-mind-500"
+          initial={{ width: 0 }}
           animate={{ width: `${progress}%` }}
-          transition={{ 
-            duration: 0.5, 
-            ease: "easeInOut" 
-          }}
-        >
-          <motion.div
-            className="absolute top-0 right-0 h-full w-4 bg-white/20"
-            animate={{
-              x: [10, -10, 10],
-            }}
-            transition={{
-              duration: 1,
-              repeat: Infinity,
-              repeatType: "mirror"
-            }}
-          />
-        </motion.div>
+          transition={{ duration: 0.5, ease: "easeInOut" }}
+        />
       </div>
     </div>
   );
