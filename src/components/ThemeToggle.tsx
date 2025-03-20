@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Moon, Sun, RotateCcw } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 const ThemeToggle = () => {
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
@@ -23,7 +23,7 @@ const ThemeToggle = () => {
   const toggleTheme = () => {
     const newTheme = theme === 'light' ? 'dark' : 'light';
     setTheme(newTheme);
-    document.documentElement.classList.toggle('dark', newTheme === 'dark');
+    document.documentElement.classList.toggle('dark');
     localStorage.setItem('theme', newTheme);
   };
   
@@ -35,44 +35,17 @@ const ThemeToggle = () => {
     >
       <Button 
         onClick={toggleTheme}
-        className="w-14 h-14 rounded-full bg-mind-600 dark:bg-mind-800 text-white shadow-lg relative overflow-hidden"
+        className="w-14 h-14 rounded-full bg-mind-600 dark:bg-mind-700 text-white shadow-lg"
         size="icon"
       >
-        <div className="absolute inset-0 bg-gradient-to-tr from-mind-500/30 to-transparent dark:from-mind-700/40 rounded-full" />
-        
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={theme}
-            initial={{ rotateY: 90, opacity: 0 }}
-            animate={{ rotateY: 0, opacity: 1 }}
-            exit={{ rotateY: -90, opacity: 0 }}
-            transition={{ 
-              duration: 0.5, 
-              type: "spring",
-              stiffness: 100
-            }}
-            style={{ transformStyle: "preserve-3d" }}
-            className="relative"
-          >
-            {theme === 'light' ? (
-              <Sun className="h-6 w-6" />
-            ) : (
-              <Moon className="h-6 w-6" />
-            )}
-          </motion.div>
-        </AnimatePresence>
-        
-        <motion.div 
-          className="absolute inset-0 bg-mind-400/20 dark:bg-mind-700/30 rounded-full"
-          animate={{ 
-            scale: [1, 1.2, 1],
-          }}
-          transition={{ 
-            duration: 2, 
-            repeat: Infinity,
-            repeatType: "mirror" 
-          }}
-        />
+        <motion.div
+          initial={{ rotateZ: 0 }}
+          animate={{ rotateZ: theme === 'dark' ? 180 : 0 }}
+          transition={{ duration: 0.5 }}
+          className="absolute"
+        >
+          {theme === 'light' ? <Sun className="h-6 w-6" /> : <Moon className="h-6 w-6" />}
+        </motion.div>
       </Button>
     </motion.div>
   );

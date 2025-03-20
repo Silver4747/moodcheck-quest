@@ -65,7 +65,6 @@ export default {
 				},
 				// Custom colors for our mental health app
 				mind: {
-					'50': '#F4F9FF',
 					'100': '#F0F7FF',
 					'200': '#E0F0FF',
 					'300': '#C2E0FF',
@@ -77,7 +76,6 @@ export default {
 					'900': '#0F2B5C',
 				},
 				calm: {
-					'50': '#F7F8FA',
 					'100': '#F7F8FA',
 					'200': '#EFF1F5',
 					'300': '#E5E9F0',
@@ -126,24 +124,6 @@ export default {
 				'pulse-gentle': {
 					'0%, 100%': { opacity: '1' },
 					'50%': { opacity: '0.8' }
-				},
-				'float': {
-					'0%, 100%': { transform: 'translateY(0)' },
-					'50%': { transform: 'translateY(-20px)' }
-				},
-				'rotate-3d': {
-					'0%': { transform: 'rotateY(0deg) rotateX(0deg)' },
-					'50%': { transform: 'rotateY(180deg) rotateX(10deg)' },
-					'100%': { transform: 'rotateY(360deg) rotateX(0deg)' }
-				},
-				'morph': {
-					'0%': { borderRadius: '60% 40% 30% 70%/60% 30% 70% 40%' },
-					'50%': { borderRadius: '30% 60% 70% 40%/50% 60% 30% 60%' },
-					'100%': { borderRadius: '60% 40% 30% 70%/60% 30% 70% 40%' }
-				},
-				'background-pan': {
-					'0%': { backgroundPosition: '0% center' },
-					'100%': { backgroundPosition: '-200% center' }
 				}
 			},
 			animation: {
@@ -152,11 +132,7 @@ export default {
 				'fade-in': 'fade-in 0.6s ease-in-out',
 				'fade-out': 'fade-out 0.6s ease-in-out',
 				'slide-up': 'slide-up 0.6s ease-out',
-				'pulse-gentle': 'pulse-gentle 2s infinite ease-in-out',
-				'float': 'float 6s infinite ease-in-out',
-				'rotate-3d': 'rotate-3d 8s infinite linear',
-				'morph': 'morph 8s infinite ease-in-out',
-				'background-pan': 'background-pan 3s linear infinite'
+				'pulse-gentle': 'pulse-gentle 2s infinite ease-in-out'
 			}
 		}
 	},
