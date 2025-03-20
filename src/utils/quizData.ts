@@ -1,4 +1,3 @@
-
 export interface Question {
   id: number;
   text: string;
@@ -224,5 +223,58 @@ export const getMentalHealthResources = () => [
     description: "Find detailed professional listings for treatment facilities and providers in your area.",
     contact: "N/A",
     url: "https://www.psychologytoday.com/us/therapists"
+  }
+];
+
+export interface IndianMentalHealthResource {
+  name: string;
+  description: string;
+  location: string;
+  contact?: string;
+  url: string;
+}
+
+export const getIndianMentalHealthResources = (): IndianMentalHealthResource[] => [
+  {
+    name: "NIMHANS",
+    description: "National Institute of Mental Health and Neurosciences - India's premier mental health institution offering specialized care and helpline services.",
+    location: "Bangalore, India",
+    contact: "Toll-Free: 080-26995100",
+    url: "https://nimhans.ac.in"
+  },
+  {
+    name: "The Live Love Laugh Foundation",
+    description: "A charitable trust founded by Deepika Padukone that aims to give hope to every person experiencing stress, anxiety, and depression.",
+    location: "Mumbai, India",
+    contact: "info@tlllfoundation.org",
+    url: "https://www.thelivelovelaughfoundation.org/"
+  },
+  {
+    name: "AASRA",
+    description: "A crisis intervention center for the lonely, distressed and suicidal. AASRA provides 24/7 helpline services.",
+    location: "Mumbai, India",
+    contact: "Helpline: 91-9820466726",
+    url: "http://www.aasra.info/"
+  },
+  {
+    name: "Vandrevala Foundation",
+    description: "Provides free and confidential emotional support for mental health issues and psychiatric crisis to people in India.",
+    location: "Mumbai, India",
+    contact: "Helpline: 9999 666 555",
+    url: "https://www.vandrevalafoundation.com/"
+  },
+  {
+    name: "Manastha",
+    description: "A platform connecting individuals to verified and professional mental health experts across India.",
+    location: "Multiple cities, India",
+    contact: "contact@manastha.com",
+    url: "https://www.manastha.com/"
+  },
+  {
+    name: "Mpower",
+    description: "An initiative by the Aditya Birla Education Trust that provides holistic mental health care solutions in India.",
+    location: "Mumbai, Delhi, Bangalore, India",
+    contact: "1800-120-820050",
+    url: "https://mpowerminds.com/"
   }
 ];
