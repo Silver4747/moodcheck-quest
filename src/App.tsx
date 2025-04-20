@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -9,6 +8,9 @@ import Quiz from "./pages/Quiz";
 import Results from "./pages/Results";
 import Resources from "./pages/Resources";
 import NotFound from "./pages/NotFound";
+import MoodTracker from "./pages/MoodTracker";
+import BreathingExercise from "./pages/BreathingExercise";
+import SelfCareChecklist from "./pages/SelfCareChecklist";
 
 const queryClient = new QueryClient();
 
@@ -23,7 +25,9 @@ const App = () => (
           <Route path="/quiz" element={<Quiz />} />
           <Route path="/results" element={<Results />} />
           <Route path="/resources" element={<Resources />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          <Route path="/mood-tracker" element={<MoodTracker />} />
+          <Route path="/breathing-exercise" element={<BreathingExercise />} />
+          <Route path="/self-care" element={<SelfCareChecklist />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

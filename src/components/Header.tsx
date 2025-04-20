@@ -2,7 +2,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Home, HelpCircle, BookOpen } from 'lucide-react';
+import { Home, HelpCircle, BookOpen, Heart, Wind, CheckSquare } from 'lucide-react';
 
 const Header: React.FC = () => {
   return (
@@ -31,6 +31,30 @@ const Header: React.FC = () => {
             }
           >
             Take Assessment
+          </NavLink>
+          <NavLink 
+            to="/mood-tracker" 
+            className={({isActive}) => 
+              `text-calm-800 hover:text-mind-600 transition-colors ${isActive ? 'text-mind-600 font-medium' : ''}`
+            }
+          >
+            Mood Tracker
+          </NavLink>
+          <NavLink 
+            to="/breathing-exercise" 
+            className={({isActive}) => 
+              `text-calm-800 hover:text-mind-600 transition-colors ${isActive ? 'text-mind-600 font-medium' : ''}`
+            }
+          >
+            Breathing
+          </NavLink>
+          <NavLink 
+            to="/self-care" 
+            className={({isActive}) => 
+              `text-calm-800 hover:text-mind-600 transition-colors ${isActive ? 'text-mind-600 font-medium' : ''}`
+            }
+          >
+            Self-Care
           </NavLink>
           <NavLink 
             to="/resources" 
