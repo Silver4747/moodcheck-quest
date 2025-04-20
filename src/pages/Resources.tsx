@@ -3,15 +3,39 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { getMentalHealthResources } from '@/utils/quizData';
 import Header from '@/components/Header';
-import Footer from '@/components/Footer';
 import { motion } from 'framer-motion';
 import { ExternalLink, Phone, ArrowRight, BookOpen, Heart } from 'lucide-react';
 
 const Resources = () => {
   const navigate = useNavigate();
-  const resources = getMentalHealthResources();
+  
+  const indianResources = [
+    {
+      name: "NIMHANS",
+      description: "National Institute of Mental Health and Neurosciences - India's premier mental health institution offering counseling and support.",
+      contact: "080-26995566",
+      url: "https://nimhans.ac.in"
+    },
+    {
+      name: "iCall Helpline",
+      description: "Free telephone counseling service by TISS providing emotional support and crisis intervention.",
+      contact: "022-25521111",
+      url: "https://icallhelpline.org/"
+    },
+    {
+      name: "Vandrevala Foundation",
+      description: "24/7 mental health support and crisis intervention helpline.",
+      contact: "1860-2662-345",
+      url: "https://www.vandrevalafoundation.com"
+    },
+    {
+      name: "AASRA",
+      description: "24/7 helpline for individuals experiencing emotional crisis or suicidal thoughts.",
+      contact: "91-9820466726",
+      url: "http://www.aasra.info/"
+    }
+  ];
   
   return (
     <div className="min-h-screen flex flex-col">
@@ -24,9 +48,9 @@ const Resources = () => {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
           >
-            <h1 className="text-3xl font-medium text-calm-900 mb-2">Mental Health Resources</h1>
+            <h1 className="text-3xl font-medium text-calm-900 mb-2">Indian Mental Health Resources</h1>
             <p className="text-calm-700 mb-12">
-              Browse these trusted resources for mental health support, information, and crisis assistance.
+              Access trusted mental health support services across India. These organizations provide counseling, crisis intervention, and emotional support.
             </p>
             
             {/* Crisis Resources */}
@@ -37,24 +61,23 @@ const Resources = () => {
                   Immediate Support Resources
                 </h2>
                 <p className="text-calm-700 mb-6">
-                  If you're experiencing a mental health crisis or having thoughts of suicide, 
-                  please reach out to one of these services immediately:
+                  If you're experiencing a mental health crisis, please reach out to one of these national helplines:
                 </p>
                 
                 <div className="grid md:grid-cols-2 gap-6">
                   <div className="bg-mind-50 rounded-lg p-5">
-                    <h3 className="text-lg font-medium text-calm-900 mb-1">988 Suicide & Crisis Lifeline</h3>
-                    <p className="text-calm-700 text-sm mb-3">24/7 support for people in distress</p>
+                    <h3 className="text-lg font-medium text-calm-900 mb-1">NIMHANS Crisis Helpline</h3>
+                    <p className="text-calm-700 text-sm mb-3">24/7 toll-free mental health support</p>
                     <div className="bg-white rounded-md p-3 text-center font-medium text-mind-700">
-                      Call or Text: 988
+                      080-26995566
                     </div>
                   </div>
                   
                   <div className="bg-mind-50 rounded-lg p-5">
-                    <h3 className="text-lg font-medium text-calm-900 mb-1">Crisis Text Line</h3>
-                    <p className="text-calm-700 text-sm mb-3">Text with a trained crisis counselor</p>
+                    <h3 className="text-lg font-medium text-calm-900 mb-1">iCall Helpline</h3>
+                    <p className="text-calm-700 text-sm mb-3">Professional counseling service</p>
                     <div className="bg-white rounded-md p-3 text-center font-medium text-mind-700">
-                      Text HOME to 741741
+                      022-25521111
                     </div>
                   </div>
                 </div>
@@ -63,10 +86,10 @@ const Resources = () => {
             
             {/* Resource Cards */}
             <section className="mb-12">
-              <h2 className="text-2xl font-medium text-calm-900 mb-6">Additional Resources</h2>
+              <h2 className="text-2xl font-medium text-calm-900 mb-6">Support Organizations</h2>
               
               <div className="grid md:grid-cols-2 gap-6">
-                {resources.map((resource, index) => (
+                {indianResources.map((resource, index) => (
                   <motion.div
                     key={index}
                     initial={{ opacity: 0, y: 20 }}
@@ -115,8 +138,7 @@ const Resources = () => {
                     </div>
                     <h2 className="text-2xl font-medium text-calm-900 mb-3">Haven't taken the assessment yet?</h2>
                     <p className="text-calm-700 mb-6">
-                      Our evidence-based depression screening can help you understand your symptoms 
-                      and suggest appropriate next steps.
+                      Take our evidence-based depression screening to understand your symptoms and get personalized recommendations.
                     </p>
                     <Button 
                       onClick={() => navigate('/quiz')}
@@ -132,8 +154,6 @@ const Resources = () => {
           </motion.div>
         </div>
       </main>
-      
-      <Footer />
     </div>
   );
 };
