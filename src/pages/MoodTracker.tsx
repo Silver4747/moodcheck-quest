@@ -4,16 +4,33 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import Header from '@/components/Header';
 import { motion } from 'framer-motion';
-import { Smile, Meh, Frown, Sun, Cloud, CloudRain } from 'lucide-react';
+import { Smile, Meh, Frown } from 'lucide-react';
+import { Textarea } from '@/components/ui/textarea';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
+import { toast } from 'sonner';
 
 const MoodTracker = () => {
   const [selectedMood, setSelectedMood] = useState<string | null>(null);
+  const [journalOpen, setJournalOpen] = useState(false);
+  const [journalEntry, setJournalEntry] = useState('');
   
   const moods = [
     { icon: Smile, label: "Happy", color: "text-green-500" },
     { icon: Meh, label: "Neutral", color: "text-yellow-500" },
     { icon: Frown, label: "Sad", color: "text-blue-500" },
   ];
+
+  const saveJournalEntry = () => {
+    // In a real app, you would save this to a database
+    // For now, we'll just show a toast notification
+    if (journalEntry.trim()) {
+      toast.success("Journal entry saved successfully");
+      setJournalEntry('');
+      setJournalOpen(false);
+    } else {
+      toast.error("Please write something before saving");
+    }
+  };
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -54,7 +71,10 @@ const MoodTracker = () => {
                 <p className="text-lg text-calm-700 mb-4">
                   You're feeling {selectedMood.toLowerCase()} today. Would you like to write about it?
                 </p>
-                <Button className="bg-mind-600 hover:bg-mind-700">
+                <Button 
+                  className="bg-mind-600 hover:bg-mind-700"
+                  onClick={() => setJournalOpen(true)}
+                >
                   Open Journal
                 </Button>
               </motion.div>
@@ -62,6 +82,31 @@ const MoodTracker = () => {
           </motion.div>
         </div>
       </main>
+
+      <Dialog open={journalOpen} onOpenChange={setJournalOpen}>
+        <DialogContent className="sm:max-w-[500px]">
+          <DialogHeader>
+            <DialogTitle className="text-xl">
+              {selectedMood && `Journal Entry - Feeling ${selectedMood}`}
+            </DialogTitle>
+          </DialogHeader>
+          <div className="py-4">
+            <p className="text-sm text-muted-foreground mb-3">Write about how you're feeling today and what might be contributing to your mood.</p>
+            <Textarea 
+              placeholder="Start writing here..." 
+              className="min-h-[200px]"
+              value={journalEntry}
+              onChange={(e) => setJournalEntry(e.target.value)}
+            />
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setJournalOpen(false)}>Cancel</Button>
+            <Button onClick={saveJournalEntry} className="bg-mind-600 hover:bg-mind-700">
+              Save Entry
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
